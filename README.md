@@ -1,56 +1,56 @@
-# Welcome to your Expo app 👋
+# Expo 58 sample
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+An Expo SDK 58 app generated from `expo-template-default@58.0.22`, using npm,
+Expo Router, and React Native 0.88. The native projects are generated during
+builds and are not committed.
 
-## Get started
+Both platforms use the app identifier `com.limrun.sampleexpo58`.
 
-1. Install dependencies
+## Development
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```sh
+npm ci
+npx expo start --dev-client
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+The app includes `expo-dev-client`. Install a development build before connecting
+to Metro. The Home and Explore tabs exercise navigation, native UI, images,
+and animations from the Expo starter app.
 
-### Other setup steps
+## Build with Limrun
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+Install the [Limrun CLI](https://docs.limrun.com) and sign in with `lim login`.
+Run these commands from this repository.
 
-## Learn more
+### iOS
 
-To learn more about developing your project with Expo, look at the following resources:
+```sh
+lim xcode build . --configuration Release --upload sample-expo58-app/ios-release.zip
+lim ios create --attach
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+The Release build includes the JavaScript bundle and runs without Metro. For a
+development build, use `--configuration Debug` and follow the
+[Expo development workflow](https://docs.limrun.com/docs/ios/build-with-xcode).
 
-## Join the community
+### Android
 
-Join our community of developers creating universal apps.
+```sh
+lim gradle build . --upload sample-expo58-app/android-debug.apk
+lim android create --install-asset sample-expo58-app/android-debug.apk --no-connect
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+The default Debug build connects to Metro. To build an APK with its JavaScript
+bundle included, use a Release task:
+
+```sh
+lim gradle build . --task :app:assembleRelease --abi x86_64 --upload sample-expo58-app/android-release.apk
+lim android create --install-asset sample-expo58-app/android-release.apk --no-connect
+```
+
+## Checks
+
+```sh
+npx expo install --check
+npx tsc --noEmit
+```
