@@ -40,13 +40,22 @@ lim gradle build . --upload sample-expo58-app/android-debug.apk
 lim android create --install-asset sample-expo58-app/android-debug.apk --no-connect
 ```
 
-The default Debug build connects to Metro. To build an APK with its JavaScript
-bundle included, use a Release task:
+The default Debug build connects to Metro. After the emulator is ready, use its
+instance ID to tunnel Metro through Limrun:
 
 ```sh
-lim gradle build . --task :app:assembleRelease --abi x86_64 --upload sample-expo58-app/android-release.apk
-lim android create --install-asset sample-expo58-app/android-release.apk --no-connect
+lim android tunnel --id <android-instance-id> --selector localhost:8081 --no-inspect --detach
+EXPO_PACKAGER_PROXY_URL=http://127.0.0.1:8081 npx expo start --dev-client --port 8081
 ```
+
+In another terminal, open the development client:
+
+```sh
+lim android open-url 'sampleexpo58app://expo-development-client/?url=http%3A%2F%2F127.0.0.1%3A8081' --id <android-instance-id>
+```
+
+On the first launch, tap Continue and close the developer menu. When finished,
+stop Metro and delete the emulator with `lim android delete <android-instance-id>`.
 
 ## Checks
 
